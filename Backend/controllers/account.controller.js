@@ -1,0 +1,62 @@
+const {Account} = require('../models/main.model');
+
+// Get all accounts
+exports.getAllAccounts = async (req, res) => {
+    try {
+        const accounts = await Account.find();
+        res.status(200).json(accounts);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+// Get an account by ID
+exports.getAccountById = async (req, res) => {
+    try {
+        const account = await Account.findById(req.params.id);
+        if (account == null) {
+            return res.status(404).json({ message: 'Account not found' });
+        }
+        res.status(200).json(account);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+// Create a new account
+exports.createAccount = async (req, res) => {
+    console.log(req.body)
+    // const account = new Account(req.body);
+    try {
+        const newAccount = await Account.create(req.body);
+        res.status(201).json(newAccount);
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+};
+
+// Update an account by ID
+exports.updateAccount = async (req, res) => {
+    try {
+        const updatedAccount = await Account.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (updatedAccount == null) {
+            return res.status(404).json({ message: 'Account not found' });
+        }
+        res.status(200).json(updatedAccount);
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+};
+
+// Delete an account by ID
+exports.deleteAccount = async (req, res) => {
+    try {
+        const deletedAccount = await Account.findByIdAndDelete(req.params.id);
+        if (deletedAccount == null) {
+            return res.status(404).json({ message: 'Account not found' });
+        }
+        res.status(200).json({ message: 'Account deleted' });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
