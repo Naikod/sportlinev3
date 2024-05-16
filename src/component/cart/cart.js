@@ -6,6 +6,9 @@ export default function Cart() {
   const handleBack = () => {
     navigate("/")
   }
+  const pay = () => {
+    navigate("/bill")
+  }
   return (
     <div>
       <div className="flex flex-col justify-center items-center p-20 bg-white max-md:px-5">
@@ -110,7 +113,7 @@ export default function Cart() {
                 <div>Total</div>
                 <div>Rp. 350.000</div>
               </div>
-              <div className="justify-center items-center px-24 py-2 mt-20 font-bold text-white bg-lime-600 rounded-lg max-md:px-5 max-md:mt-10">
+              <div onClick={pay} className="justify-center items-center px-24 py-2 mt-20 font-bold text-white bg-lime-600 rounded-lg max-md:px-5 max-md:mt-10 hover: cursor-pointer">
                 Check Out
               </div>
             </div>

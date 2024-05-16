@@ -55,7 +55,7 @@ export default function BenefitLanding() {
         transition={{ duration: 1 }}
         className="flex justify-center items-center mb-60 px-16 py-20 bg-white max-md:px-5"
       >
-        <div className="justify-between mt-60 mb-60 w-full max-w-screen-xl bg-neutral-900 max-md:mt-10 max-md:max-w-full">
+        <div className="justify-between mt-60  w-full max-w-screen-xl bg-neutral-900 max-md:mt-10 max-md:max-w-full">
           <div className="flex max-md:flex-col max-md:gap-0">
             <motion.div
               id="text-section"

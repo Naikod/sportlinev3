@@ -1,10 +1,15 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function DetailProduct() {
-  return (
+  const navigate = useNavigate()
+  const back = () => {
+    navigate("/")
+  }
+    return (
     <div>
       <div className="flex flex-col justify-center items-center p-20 bg-white max-md:px-5">
-      <div className="flex gap-4 justify-center self-start mt-12 ml-11 text-4xl font-bold leading-10 whitespace-nowrap text-neutral-900 max-md:mt-10 max-md:ml-2.5">
+      <div onClick={back} className="flex gap-4 justify-center self-start mt-12 ml-11 text-4xl font-bold leading-10 whitespace-nowrap text-neutral-900 max-md:mt-10 max-md:ml-2.5 hover:cursor-pointer">
         <img
           loading="lazy"
           src="https://cdn.builder.io/api/v1/image/assets/TEMP/32f24764d68b067f796363b77541faa4c59dd5563cf13bb34bfa5976198cf54a?"

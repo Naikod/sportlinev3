@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import CardBody from "../core/cardBody";
+import { useNavigate } from "react-router-dom";
 
 export default function Landing() {
   const textControls = useAnimation();
@@ -46,6 +47,10 @@ export default function Landing() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [textControls, imageControls, cardControls1, cardControls2, cardControls3, hasScrolledCard1, hasScrolledCard2, hasScrolledCard3]);
 
+  const navigate = useNavigate()
+  const shop = () => {
+    navigate("/detail")
+  }
   return (
     <div>
       <motion.div
@@ -72,7 +77,7 @@ export default function Landing() {
                   do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 </div>
                 <div className="flex gap-2.5 justify-between self-start mt-12 leading-[170%] max-md:mt-10">
-                  <div className="justify-center px-6 py-2.5 text-white rounded-full bg-neutral-900 max-md:px-5">
+                  <div onClick={shop} className="justify-center px-6 py-2.5 text-white rounded-full bg-neutral-900 max-md:px-5 hover: cursor-pointer">
                     Shop Now
                   </div>
                   <div className="justify-center px-6 py-2.5 rounded-full border border-solid border-neutral-900 text-neutral-900 max-md:px-5">
