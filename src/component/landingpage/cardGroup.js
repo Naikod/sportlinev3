@@ -1,5 +1,5 @@
 import React from "react";
-import CardBody from "./cardBody";
+import CardBody from "../core/cardBody";
 
 export default function CardGroup() {
   return (

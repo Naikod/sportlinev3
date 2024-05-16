@@ -48,12 +48,14 @@ export default function Navbar() {
             </div>
             <div className="flex gap-2 justify-between self-start">
               <div className="flex justify-center items-center self-start p-2 w-11 h-11 rounded-md bg-neutral-200">
+                <a href='/cart'>
                 <img
                   loading="lazy"
                   src="https://cdn.builder.io/api/v1/image/assets/TEMP/64e4dad8e7276b08483144cb8e9e01e3bcfe3ac906970740d44a4072c890c1a8?"
                   className="w-7 aspect-square"
                   alt="Cart"
-                />
+                  />
+                  </a>
               </div>
               <div className="flex justify-center items-center p-2 rounded-md bg-neutral-200 h-[45px] w-[45px]">
                 <img

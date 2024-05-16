@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, useAnimation } from 'framer-motion';
-import CardBody from './cardBody';
+import CardBody from '../core/cardBody';
 
 export default function BestOfferProduct() {
   const imageControls = useAnimation();
@@ -56,12 +56,12 @@ export default function BestOfferProduct() {
             id="image-section"
             initial={{ opacity: 0, x: -50 }}
             animate={imageControls}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
           >
             <img
               loading="lazy"
               src={process.env.PUBLIC_URL + "/img/Frame 99.png"}
-              className="mt-40 max-w-full aspect-[11.11] w-[642px] max-md:mt-10"
+              className="mt-40 max-w-full aspect-[10] w-[635px] max-md:mt-10"
             />
           </motion.div>
           <div className="justify-between mt-12 max-md:mt-10 max-md:max-w-full">
@@ -70,7 +70,7 @@ export default function BestOfferProduct() {
                 id="card-section-1"
                 initial={{ opacity: 0, y: 50 }}
                 animate={cardControls1}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
                 className="flex flex-col w-[33%]"
               >
                 <CardBody />
@@ -79,7 +79,7 @@ export default function BestOfferProduct() {
                 id="card-section-2"
                 initial={{ opacity: 0, y: 50 }}
                 animate={cardControls2}
-                transition={{ duration: 0.5, delay: 0.2 }}
+                transition={{ duration: 0.5, delay: 0.7 }}
                 className="flex flex-col w-[33%]"
               >
                 <CardBody />
@@ -88,7 +88,7 @@ export default function BestOfferProduct() {
                 id="card-section-3"
                 initial={{ opacity: 0, y: 50 }}
                 animate={cardControls3}
-                transition={{ duration: 0.5, delay: 0.4 }}
+                transition={{ duration: 0.5, delay: 0.9 }}
                 className="flex flex-col w-[33%]"
               >
                 <CardBody />
