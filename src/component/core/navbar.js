@@ -2,22 +2,26 @@ import React, { useState, useEffect } from 'react';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 10);
     };
 
     window.addEventListener('scroll', handleScroll);
-
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  };
 
   return (
     <div className={`fixed top-0 w-full z-50 transition duration-500 ${isScrolled ? 'bg-black' : 'bg-white'}`}>
@@ -38,37 +42,44 @@ export default function Navbar() {
             <div className={`${isScrolled ? 'text-white' : 'text-black'}`}>About</div>
           </div>
           <div className="flex gap-2 justify-between self-stretch">
-            <div className="flex flex-col justify-center items-start py-3 pr-52 pl-2 rounded-md bg-neutral-200">
-              <img
-                loading="lazy"
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/38fb3c254c486f8c3def1d05c04abbf060a2b6ac58aa5873c5c3bcc19c1d6fb1?"
-                className="w-6 aspect-square"
-                alt="Search"
-              />
-            </div>
-            <div className="flex gap-2 justify-between self-start">
-              <div className="flex justify-center items-center self-start p-2 w-11 h-11 rounded-md bg-neutral-200">
-                <a href='/cart'>
-                <img
-                  loading="lazy"
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/64e4dad8e7276b08483144cb8e9e01e3bcfe3ac906970740d44a4072c890c1a8?"
-                  className="w-7 aspect-square"
-                  alt="Cart"
+            {isLoggedIn ? (
+              <>
+                <div className="flex flex-col justify-center items-start py-3 pr-52 pl-2 rounded-md bg-neutral-200">
+                  <img
+                    loading="lazy"
+                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/38fb3c254c486f8c3def1d05c04abbf060a2b6ac58aa5873c5c3bcc19c1d6fb1?"
+                    className="w-6 aspect-square"
+                    alt="Search"
                   />
-                  </a>
-              </div>
-              <div className="flex justify-center items-center p-2 rounded-md bg-neutral-200 h-[45px] w-[45px]">
-                <img
-                  loading="lazy"
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/75cd2febd8d17a1e89ad30de39e84fd8c34cf92d1ab6437e574c03ea5d4393c5?"
-                  className="aspect-square w-[29px]"
-                  alt="User"
-                />
-              </div>
-            </div>
+                </div>
+                <div className="flex gap-2 justify-between self-start">
+                  <div className="flex justify-center items-center self-start p-2 w-11 h-11 rounded-md bg-neutral-200">
+                    <a href='/cart'>
+                      <img
+                        loading="lazy"
+                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/64e4dad8e7276b08483144cb8e9e01e3bcfe3ac906970740d44a4072c890c1a8?"
+                        className="w-7 aspect-square"
+                        alt="Cart"
+                      />
+                    </a>
+                  </div>
+                  <div className="flex justify-center items-center p-2 rounded-md bg-neutral-200 h-[45px] w-[45px]">
+                    <img
+                      loading="lazy"
+                      src="https://cdn.builder.io/api/v1/image/assets/TEMP/75cd2febd8d17a1e89ad30de39e84fd8c34cf92d1ab6437e574c03ea5d4393c5?"
+                      className="aspect-square w-[29px]"
+                      alt="User"
+                    />
+                  </div>
+                  <button onClick={handleLogout} className="text-white bg-red-500 px-3 py-2 rounded-md">Logout</button>
+                </div>
+              </>
+            ) : (
+              <button onClick={handleLogin} className="justify-center py-2 pr-10 pl-8 text-lg font-semibold leading-8 text-black rounded-md bg-neutral-200 max-md:px-5">Login</button>
+            )}
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
