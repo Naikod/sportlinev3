@@ -5,7 +5,7 @@
 /.pnp
 .pnp.js
 
-/test_feature
+src/test_feature
 
 # testing
 /coverage
