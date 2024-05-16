@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
-import CardBody from "./cardBody";
+import CardBody from "../core/cardBody";
 
 export default function Landing() {
   const textControls = useAnimation();

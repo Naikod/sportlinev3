@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Page404NotFound from "./component/core/page404NotFound";
-import Main from "./layout/main";
+import Main from "./layout/LandingPage";
 
 function App() {
   return (
