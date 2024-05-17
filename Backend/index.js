@@ -8,17 +8,18 @@ const productRoutes = require('./routes/product.route');
 const accountRoutes = require('./routes/account.route');
 const transactionRoutes = require('./routes/transaction.route');
 const paymentCodeRoutes = require('./routes/payment.route');
+const emailRoutes = require('./routes/email.route')
 
 // Middleware to parse JSON
 app.use(cors());
 app.use(bodyParser.json()); 
-app.use(express.json());
 
 // Routes
 app.use('/products', productRoutes);
 app.use('/accounts', accountRoutes);
 app.use('/transactions', transactionRoutes);
-app.use('/payment-codes', paymentCodeRoutes);
+app.use('/payment', paymentCodeRoutes);
+app.use('/email', emailRoutes)
 
 // Database connection
 mongoose.connect('mongodb+srv://Waans:waansdb@waansdb.ic1paxa.mongodb.net/?retryWrites=true&w=majority&appName=WaansDB', {

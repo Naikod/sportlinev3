@@ -29,7 +29,8 @@ const accountSchema = new Schema({
 // Define Transaction Schema
 const transactionSchema = new Schema({
     productID: [{ type: Schema.Types.ObjectId, ref: 'Product', required: true }],
-    account: { type: Schema.Types.ObjectId, ref: 'Account', required: true },
+    accountID: { type: Schema.Types.ObjectId, ref: 'Account', required: true },
+    paymentID: { type: Schema.Types.ObjectId, ref: 'PaymentCode', required: true },
     createdAt: { type: Date, default: Date.now }
 });
 
@@ -37,6 +38,7 @@ const transactionSchema = new Schema({
 const paymentCodeSchema = new Schema({
     id: { type: String, required: true },
     total: { type: Number, required: true },
+    paid: { type: String, enum: ["Pending", "Done"], default: 'Pending' },
     isExpire: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now }
 });

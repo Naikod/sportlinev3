@@ -1,4 +1,35 @@
-const PaymentCode = require('../models/main.model');
+const {PaymentCode} = require('../models/main.model');
+const Chiperline = require('chiperline')
+const chiper = new Chiperline("secretkeysportlinev3")
+
+
+exports.confirmPayment = async (req, res) => {
+    try {
+        const getData = await PaymentCode.find({id: req.params.id});
+        if(Number(req.body.amount) <= getData.data[0].total){
+            const confirmPayment = await PaymentCode.findOneAndUpdate(
+                { id: req.body.id },
+                { paid: 'Done', isExpire: true },
+                { new: true } // Return the updated document
+            );
+            res.status(200).json({success: true, data: confirmPayment})
+        } else {
+            res.status(200).json({success: false, message: "Saldo Kurang"})
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+// Get Payment Status
+exports.getPaymentStatus = async (req, res) => {
+    try {
+        const getPaymentStatus = await PaymentCode.find({id: req.params.id});
+        res.status(200).json(getPaymentStatus);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
 
 // Get all payment codes
 exports.getAllPaymentCodes = async (req, res) => {
@@ -25,9 +56,16 @@ exports.getPaymentCodeById = async (req, res) => {
 
 // Create a new payment code
 exports.createPaymentCode = async (req, res) => {
-    const paymentCode = new PaymentCode(req.body);
+    // id: { type: String, required: true },
+    // total: { type: Number, required: true },
+    // isExpire: { type: Boolean, default: false },
+    // createdAt: { type: Date, default: Date.now }
     try {
-        const newPaymentCode = await paymentCode.save();
+        const data = {
+            id: chiper.generateUUID(),
+            total: 50000
+        }
+        const newPaymentCode = await PaymentCode.create(data);
         res.status(201).json(newPaymentCode);
     } catch (err) {
         res.status(400).json({ message: err.message });
