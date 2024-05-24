@@ -5,17 +5,12 @@ const chiper = new Chiperline("secretkeysportlinev3")
 
 exports.confirmPayment = async (req, res) => {
     try {
-        const getData = await PaymentCode.find({id: req.params.id});
-        if(Number(req.body.amount) <= getData.data[0].total){
             const confirmPayment = await PaymentCode.findOneAndUpdate(
                 { id: req.body.id },
                 { paid: 'Done', isExpire: true },
                 { new: true } // Return the updated document
             );
             res.status(200).json({success: true, data: confirmPayment})
-        } else {
-            res.status(200).json({success: false, message: "Saldo Kurang"})
-        }
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

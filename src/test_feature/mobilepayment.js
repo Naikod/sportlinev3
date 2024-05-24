@@ -14,7 +14,7 @@ function PaymentPage({ match }) {
     const fetchData = async () => {
         try {
             const request = await axios.get(
-                `http://192.168.43.232:5000/payment/status/${idPayment.paymentid}`
+                `http://localhost:5000/payment/status/${idPayment.paymentid}`
               );
               console.log(request.data[0])
             //   alert(`http://192.168.1.34:5000/payment/status/${idPayment.paymentid}`)
@@ -31,7 +31,7 @@ function PaymentPage({ match }) {
   const handleConfirm = async () => {
     try {
       const response = await axios.post(
-        "http://192.168.43.232:5000/payment/confirm",
+        "http://localhost:5000/payment/confirm",
         { id: idPayment.paymentid, amount: amount }
       );
       if (response.data.success) {

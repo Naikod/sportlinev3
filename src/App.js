@@ -8,6 +8,7 @@ import Navigate from "./component/auth/login";
 import Bill from "./component/payment/bill";
 import Payment from "./test_feature/payment";
 import MobilePayment from "./test_feature/mobilepayment";
+import ProfilePage from "./component/profilePage/profilePage";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/payment/:paymentid" element={<Payment />} />
           <Route path="/payment/mobile/:paymentid" element={<MobilePayment />} />
           {/* <Route path="/testqr" element={<Testqr />} /> */}
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="*" element={<Page404NotFound />} />
         </Routes>
       </div>
