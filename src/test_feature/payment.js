@@ -18,7 +18,11 @@ export default function () {
       setStatus(response.data[0].paid);
       setPaymentId(idPayment.paymentid);
       setPaymentUrl(
+<<<<<<< HEAD
         `http://192.168.1.34:3000/payment/mobile/${idPayment.paymentid}`
+=======
+        `http://10.213.4.120:3000/payment/mobile/${idPayment.paymentid}`
+>>>>>>> main
       );
     }, 2000);
     
