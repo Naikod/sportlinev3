@@ -18,7 +18,7 @@ export default function () {
       setStatus(response.data[0].paid);
       setPaymentId(idPayment.paymentid);
       setPaymentUrl(
-        `http://192.168.43.232:3000/payment/mobile/${idPayment.paymentid}`
+        `http://192.168.1.34:3000/payment/mobile/${idPayment.paymentid}`
       );
     }, 2000);
     
@@ -37,7 +37,10 @@ export default function () {
         <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100">
           <div className="flex flex-col items-center">
             {paymentUrl ? (
+
               <QRCode value={paymentUrl} className="mb-4" size={256} />
+
+
             ) : (
               <p>Loading QR Code...</p>
             )}
