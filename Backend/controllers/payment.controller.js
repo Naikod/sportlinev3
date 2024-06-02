@@ -55,9 +55,13 @@ exports.createPaymentCode = async (req, res) => {
   // isExpire: { type: Boolean, default: false },
   // createdAt: { type: Date, default: Date.now }
   try {
+    const now = new Date();
+  // Calculate the expire date and time (15 minutes from now)
+    const expireTime = new Date(now.getTime() + 15 * 60000);
     const data = {
       id: chiper.generateUUID(),
-      total: 50000,
+      total: req.body.total,
+      expireAt: expireTime
     };
     const newPaymentCode = await PaymentCode.create(data);
     res.status(201).json(newPaymentCode);

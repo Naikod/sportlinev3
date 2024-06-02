@@ -2,17 +2,32 @@ import React, { useEffect, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import CardBody from "../core/cardBody";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Landing() {
+  const [limitedProduct, setLimitedProduct] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    fetchFoods();
+  }, []);
+
+  const fetchFoods = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/products");
+      setLimitedProduct(
+        response.data
+          .filter((item) => item.category.includes("Limited"))
+          .slice(0, 3)
+      );
+      setIsLoading(false);
+      // console.log(response.data.filter(item => item.category.includes("Limited")).slice(0, 3))
+    } catch (error) {
+      console.error("Error fetching foods:", error);
+    }
+  };
+
   const textControls = useAnimation();
   const imageControls = useAnimation();
-  const cardControls1 = useAnimation();
-  const cardControls2 = useAnimation();
-  const cardControls3 = useAnimation();
-
-  const [hasScrolledCard1, setHasScrolledCard1] = useState(false);
-  const [hasScrolledCard2, setHasScrolledCard2] = useState(false);
-  const [hasScrolledCard3, setHasScrolledCard3] = useState(false);
 
   useEffect(() => {
     // Start text and image animations when component mounts
@@ -20,37 +35,19 @@ export default function Landing() {
     imageControls.start({ opacity: 1, x: 0 });
 
     const handleScroll = () => {
-      const cardElement1 = document.getElementById("card-section-1");
-      const cardElement2 = document.getElementById("card-section-2");
-      const cardElement3 = document.getElementById("card-section-3");
-
-      const cardPosition1 = cardElement1.getBoundingClientRect().top;
-      const cardPosition2 = cardElement2.getBoundingClientRect().top;
-      const cardPosition3 = cardElement3.getBoundingClientRect().top;
-      const screenPosition = window.innerHeight / 1.3;
-
-      if (cardPosition1 < screenPosition && !hasScrolledCard1) {
-        cardControls1.start({ opacity: 1, y: 0 });
-        setHasScrolledCard1(true);
-      }
-      if (cardPosition2 < screenPosition && !hasScrolledCard2) {
-        cardControls2.start({ opacity: 1, y: 0 });
-        setHasScrolledCard2(true);
-      }
-      if (cardPosition3 < screenPosition && !hasScrolledCard3) {
-        cardControls3.start({ opacity: 1, y: 0 });
-        setHasScrolledCard3(true);
-      }
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [textControls, imageControls, cardControls1, cardControls2, cardControls3, hasScrolledCard1, hasScrolledCard2, hasScrolledCard3]);
+  }, [
+    textControls,
+    imageControls,
+  ]);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const shop = () => {
-    navigate("/detail")
-  }
+    navigate("/detail");
+  };
   return (
     <div>
       <motion.div
@@ -77,7 +74,10 @@ export default function Landing() {
                   do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 </div>
                 <div className="flex gap-2.5 justify-between self-start mt-12 leading-[170%] max-md:mt-10">
-                  <div onClick={shop} className="justify-center px-6 py-2.5 text-white rounded-full bg-neutral-900 max-md:px-5 hover: cursor-pointer">
+                  <div
+                    onClick={shop}
+                    className="justify-center px-6 py-2.5 text-white rounded-full bg-neutral-900 max-md:px-5 hover: cursor-pointer"
+                  >
                     Shop Now
                   </div>
                   <div className="justify-center px-6 py-2.5 rounded-full border border-solid border-neutral-900 text-neutral-900 max-md:px-5">
@@ -117,33 +117,39 @@ export default function Landing() {
             />
             <div className="justify-between mt-12 max-md:mt-10 max-md:max-w-full">
               <div className="flex gap-28 max-md:flex-col max-md:gap-0">
-                <motion.div
-                  id="card-section-1"
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={cardControls1}
-                  transition={{ duration: 0.5 }}
-                  className="flex flex-col w-[33%]"
-                >
-                  <CardBody />
-                </motion.div>
-                <motion.div
-                  id="card-section-2"
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={cardControls2}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  className="flex flex-col w-[33%]"
-                >
-                  <CardBody />
-                </motion.div>
-                <motion.div
-                  id="card-section-3"
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={cardControls3}
-                  transition={{ duration: 0.5, delay: 0.4 }}
-                  className="flex flex-col w-[33%]"
-                >
-                  <CardBody />
-                </motion.div>
+                {isLoading ? (
+                  <>Loading...</>
+                ) : (
+                  <>
+                    <div className="flex flex-col w-[33%]">
+                      <CardBody
+                        images={limitedProduct[0].images}
+                        title={limitedProduct[0].name}
+                        description={limitedProduct[0].description}
+                        stock={limitedProduct[0].stock}
+                        id={limitedProduct[0]._id}
+                      />
+                    </div>
+                    <div className="flex flex-col w-[33%]">
+                      <CardBody
+                        images={limitedProduct[1].images}
+                        title={limitedProduct[1].name}
+                        description={limitedProduct[1].description}
+                        stock={limitedProduct[1].stock}
+                        id={limitedProduct[1]._id}
+                      />
+                    </div>
+                    <div className="flex flex-col w-[33%]">
+                      <CardBody
+                        images={limitedProduct[2].images}
+                        title={limitedProduct[2].name}
+                        description={limitedProduct[2].description}
+                        stock={limitedProduct[2].stock}
+                        id={limitedProduct[2]._id}
+                      />
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </motion.div>

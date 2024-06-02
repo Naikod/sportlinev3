@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import AuthService from '../auth/AuthProvider';
+import { useNavigate } from 'react-router-dom';
+import Chiperline from 'chiperline';
+const chiper = new Chiperline("SUPERSECRETSPORTLINEV3")
+
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  const [isLoggedIn, setIsLoggedIn] = useState(AuthService.isAuthenticated);
+  const navigate = useNavigate()
+  
   useEffect(() => {
+    if(localStorage.getItem("otp")){
+      navigate("/otp-test")
+    }
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
@@ -16,11 +25,12 @@ export default function Navbar() {
   }, []);
 
   const handleLogin = () => {
-    setIsLoggedIn(true);
+    navigate("/login")
   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
+    AuthService.logout()
   };
 
   return (

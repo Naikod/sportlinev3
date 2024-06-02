@@ -1,11 +1,40 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios'
 
-export default function DetailProduct() {
+export default function DetailProduct(props) {
   const navigate = useNavigate();
+  const [product, setProduct] = useState([])
+  const [data, setData] = useState([])
   const [quantity, setQuantity] = useState(1); // Initialize quantity state
-  const pricePerUnit = 150000; // Price per unit
+  const pricePerUnit = data.price; // Price per unit
   const totalPrice = pricePerUnit * quantity; // Calculate total price based on quantity
+  const [isLoading, setIsLoading] = useState(true);
+  const {id} = useParams()
+  useEffect(() => {
+    fetchFoods();
+  }, []);
+
+  const fetchFoods = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/products/${id}`);
+      setData(response.data)
+      setIsLoading(false)
+      // console.log(response.data.filter(item => item.category.includes("Limited")).slice(0, 3))
+    } catch (error) {
+      console.error("Error fetching foods:", error);
+    }
+  };
+
+  const handleCart = () => {
+    if(localStorage.getItem('cart')){
+        setProduct(JSON.parse(localStorage.getItem('cart')))
+    }
+    setProduct((prevIds) => [...prevIds, {id: data._id, amount: quantity, total: totalPrice, image: data.images, name: data.name}])
+    localStorage.setItem("cart", JSON.stringify(product))
+    navigate("/cart")
+    // localStorage.setItem("cart", JSON.stringify([{id: data._id, amount: quantity, total: totalPrice}]))
+  }
 
   const back = () => {
     navigate("/");
@@ -20,6 +49,7 @@ export default function DetailProduct() {
   };
 
   return (
+    (isLoading ? <>Loading Data...</> : 
     <div>
       <div className="flex flex-col justify-center items-center p-20 bg-white max-md:px-5">
         <div
@@ -39,7 +69,7 @@ export default function DetailProduct() {
             <div className="flex flex-col w-6/12 max-md:ml-0 max-md:w-full">
               <img
                 loading="lazy"
-                src={process.env.PUBLIC_URL + "/img/detailImg.png"}
+                src={process.env.PUBLIC_URL + `/product_image/${data.images}`}
                 className="grow w-full aspect-[0.94] max-md:mt-10 max-md:max-w-full"
                 alt="Product Detail"
               />
@@ -50,7 +80,7 @@ export default function DetailProduct() {
                   LIMITED EDITION
                 </div>
                 <div className="mt-5 text-4xl font-bold leading-10 text-neutral-900 max-md:max-w-full">
-                  Sportline Running V2
+                  {data.name}
                 </div>
                 <div className="flex gap-1.5 self-start mt-8">
                   <img
@@ -85,12 +115,7 @@ export default function DetailProduct() {
                   />
                 </div>
                 <div className="mt-12 mb-16 text-xl font-semibold leading-9 text-neutral-900 max-md:mt-10 max-md:max-w-full">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                  enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                  nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                  in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                  nulla pariatur.
+                  {data.description}
                 </div>
                 <div className="mt-8 text-3xl font-bold leading-9 text-neutral-900 max-md:max-w-full">
                   Rp. {totalPrice.toLocaleString()}
@@ -124,7 +149,7 @@ export default function DetailProduct() {
                       className="shrink-0 my-auto aspect-square fill-neutral-900 w-[17px]"
                       alt="Cart"
                     />
-                    <div className="pt-1">Add to Cart</div>
+                    <button className="pt-1" onClick={handleCart}>Add to Cart</button>
                   </div>
                 </div>
               </div>
@@ -133,5 +158,6 @@ export default function DetailProduct() {
         </div>
       </div>
     </div>
+    )
   );
 }

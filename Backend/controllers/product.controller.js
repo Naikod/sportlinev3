@@ -1,4 +1,4 @@
-const Product = require('../models/main.model');
+const {Product} = require('../models/main.model');
 
 // Get all products
 exports.getAllProducts = async (req, res) => {
@@ -25,6 +25,7 @@ exports.getProductById = async (req, res) => {
 
 // Create a new product
 exports.createProduct = async (req, res) => {
+    req.body.images = req.file.filename
     const product = new Product(req.body);
     try {
         const newProduct = await product.save();
