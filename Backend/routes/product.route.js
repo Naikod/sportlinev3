@@ -7,7 +7,7 @@ const fs = require("fs")
 const path = require("path")
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "/home/ridwan/Desktop/sportlinev3/sportlinev3/public/product_image");
+    cb(null, "../../public/product_image");
   },
   filename: (req, file, cb) => {
     cb(null, "product_image-" + Date.now() + path.extname(file.originalname));
