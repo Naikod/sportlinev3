@@ -10,6 +10,13 @@ export default function () {
   const { paymentid } = useParams();
   const navigate = useNavigate();
 
+  const rupiah = (number)=>{
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR"
+    }).format(number);
+  }
+
   const handleBack = () => {
     navigate("/");
   };
@@ -116,7 +123,7 @@ export default function () {
                             className="mb-4"
                             size={256}
                           />
-                          <div className="ml-16">Rp {dataInvoice.total}</div>
+                          <div className="ml-16">{rupiah(dataInvoice.total)}</div>
                         </div>
                         <div className="flex flex-col justify-between items-center self-stretch px-20 py-4 mt-14 bg-zinc-300 max-md:px-5 max-md:mt-10 max-md:max-w-full">
                           <div className="text-lg leading-8">

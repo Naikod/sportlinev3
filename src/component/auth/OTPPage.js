@@ -24,7 +24,7 @@ export default function OTPVerification() {
     event.preventDefault();
     const enteredOtp = otp.join('');
     // Assuming we send the entered OTP to the backend here
-    if (enteredOtp === otps.otp) { // Replace this condition with actual OTP verification
+    if (enteredOtp === `${otps.otp}`) { // Replace this condition with actual OTP verification
       toast.success('OTP Verified Successfully!', {
         position: "top-right",
         autoClose: 5000,

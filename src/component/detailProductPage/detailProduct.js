@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios'
+import axios from 'axios';
+import { ToastContainer, toast } from "react-toastify";
+import AuthService from '../auth/AuthProvider';
+import "react-toastify/dist/ReactToastify.css";
 
 export default function DetailProduct(props) {
   const navigate = useNavigate();
-  const [product, setProduct] = useState([])
-  const [data, setData] = useState([])
+  const [product, setProduct] = useState([]);
+  const [data, setData] = useState([]);
   const [quantity, setQuantity] = useState(1); // Initialize quantity state
   const pricePerUnit = data.price; // Price per unit
   const totalPrice = pricePerUnit * quantity; // Calculate total price based on quantity
   const [isLoading, setIsLoading] = useState(true);
-  const {id} = useParams()
+  const userDataID = AuthService.getCurrentUser()
+  const { id } = useParams();
+
   useEffect(() => {
     fetchFoods();
   }, []);
@@ -18,23 +23,33 @@ export default function DetailProduct(props) {
   const fetchFoods = async () => {
     try {
       const response = await axios.get(`http://localhost:5000/products/${id}`);
-      setData(response.data)
-      setIsLoading(false)
-      // console.log(response.data.filter(item => item.category.includes("Limited")).slice(0, 3))
+      setData(response.data);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching foods:", error);
     }
   };
 
   const handleCart = () => {
-    if(localStorage.getItem('cart')){
-        setProduct(JSON.parse(localStorage.getItem('cart')))
-    }
-    setProduct((prevIds) => [...prevIds, {id: data._id, amount: quantity, total: totalPrice, image: data.images, name: data.name}])
-    localStorage.setItem("cart", JSON.stringify(product))
-    navigate("/cart")
-    // localStorage.setItem("cart", JSON.stringify([{id: data._id, amount: quantity, total: totalPrice}]))
-  }
+    toast.info(<div> Added to Cart! <a href="/cart">Cek Keranjang</a> </div>, {
+      position: "top-right",
+      autoClose: 10000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+    setProduct(prevProduct => {
+      const updatedProduct = [...prevProduct, {product: { id: data._id, amount: quantity, total: totalPrice, image: data.images, name: data.name }, UserID: userDataID._id}];
+      localStorage.setItem("cart", JSON.stringify(updatedProduct));
+      return updatedProduct;
+    });
+    setTimeout(() => {
+      navigate("/cart");
+    }, 2000)
+  };
 
   const back = () => {
     navigate("/");
@@ -49,8 +64,9 @@ export default function DetailProduct(props) {
   };
 
   return (
-    (isLoading ? <>Loading Data...</> : 
+    isLoading ? <>Loading Data...</> : 
     <div>
+      <ToastContainer />
       <div className="flex flex-col justify-center items-center p-20 bg-white max-md:px-5">
         <div
           onClick={back}
@@ -77,7 +93,7 @@ export default function DetailProduct(props) {
             <div className="flex flex-col ml-5 w-6/12 max-md:ml-0 max-md:w-full">
               <div className="flex flex-col justify-between mt-1 max-md:mt-10 max-md:max-w-full">
                 <div className="text-2xl font-bold leading-8 text-lime-700 max-md:max-w-full">
-                  LIMITED EDITION
+                  {data.category.includes("Limited") ? "LIMITED EDITION":""}
                 </div>
                 <div className="mt-5 text-4xl font-bold leading-10 text-neutral-900 max-md:max-w-full">
                   {data.name}
@@ -158,6 +174,5 @@ export default function DetailProduct(props) {
         </div>
       </div>
     </div>
-    )
   );
 }

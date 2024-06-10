@@ -11,6 +11,8 @@ import Payment from "./test_feature/payment";
 import MobilePayment from "./test_feature/mobilepayment";
 import ProfilePage from "./component/profilePage/profilePage";
 import OTPPage from "./component/auth/OTPPage";
+import TransactionDetail from "./component/transactionDetail/transactionDetail";
+import TransactionHistory from "./component/transactionDetail/transactionList";
 
 function App() {
   return (
@@ -33,7 +35,10 @@ function App() {
                 </div>
               </div>
             }
+          
           />
+          <Route path="/transactions" element={<TransactionHistory />} />
+          <Route path="/transaction-detail/:id" element={<TransactionDetail />} />
           <Route path="/payment/:paymentid" element={<Payment />} />
           <Route
             path="/payment/mobile/:paymentid"

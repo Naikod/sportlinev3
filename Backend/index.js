@@ -22,7 +22,7 @@ app.use('/payment', paymentCodeRoutes);
 app.use('/email', emailRoutes)
 
 // Database connection
-mongoose.connect('mongodb+srv://Waans:waansdb@waansdb.ic1paxa.mongodb.net/?retryWrites=true&w=majority&appName=WaansDB', {
+mongoose.connect('PASTE-THE-DATABASE-URL', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });

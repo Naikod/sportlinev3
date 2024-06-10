@@ -4,7 +4,7 @@ const chiper = new Chiperline("SUPERSECRETSPORTLINEV3");
 class AuthService {
   static async login(email, password) {
     console.log("Called!");
-    const response = await fetch(`http://localhost:5000/accounts/login/auth`, {
+    const response = await fetch(`http://${process.env.REACT_APP_PAYMENT_IP}:5000/accounts/login/auth`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -29,7 +29,7 @@ class AuthService {
 
   static getCurrentUser() {
     // Retrieve user data from localStorage
-    const user = localStorage.getItem("SESSION_DATA");
+    const user = chiper.decrypt(localStorage.getItem("SESSION_DATA"));
     return user ? JSON.parse(user) : null;
   }
 

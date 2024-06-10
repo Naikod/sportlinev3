@@ -76,7 +76,7 @@ export default function Navigate() {
         );
         console.log(respon);
         localStorage.setItem("otp", chiper.encrypt(JSON.stringify({otp: respon.data.otp, email: email})));
-        Auth.setLogin(data)
+        Auth.setLogin(data.data)
         navigate("/otp-test");
       } else {
         toast.error("Email Already in use", {

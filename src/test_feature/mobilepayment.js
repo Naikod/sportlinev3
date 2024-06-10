@@ -28,18 +28,20 @@ function PaymentPage({ match }) {
 
   const handleConfirm = async () => {
     try {
-      const response = await axios.post(
-        `http://${process.env.REACT_APP_PAYMENT_IP}:5000/payment/confirm`,
-        { id: idPayment.paymentid, amount: amount }
-      );
-      if (response.data.success) {
-        if (response.data.data.total <= Number(amount)) {
-          
-          setStatus(true);
-          setMessage("Payment confirmed successfully!");
-        } else {
-          setMessage("Saldo Kurang");
+      if(amount >= data.total) {
+        const response = await axios.post(
+          `http://${process.env.REACT_APP_PAYMENT_IP}:5000/payment/confirm`,
+          { id: idPayment.paymentid, amount: amount }
+        );
+        if (response.data.success) {
+          if (response.data.data.total <= Number(amount)) {
+            
+            setStatus(true);
+            setMessage("Payment confirmed successfully!");
+          }
         }
+      } else {
+        setMessage("Saldo Kurang");
       }
     } catch (error) {
       setMessage("Error confirming payment.");

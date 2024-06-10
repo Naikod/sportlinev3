@@ -47,11 +47,12 @@ exports.getAccountById = async (req, res) => {
 // Create a new account
 exports.createAccount = async (req, res) => {
   try {
-    req.body.password = chiper.encrypt(req.body.chiper)
+    req.body.password = chiper.encrypt(req.body.password)
     const newAccount = await Account.create(req.body);
-    res.status(201).json({ created: true });
+    res.status(201).json({ created: true , data: newAccount});
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    console.log(err)
+    res.status(400).json({ message: err });
   }
 };
 

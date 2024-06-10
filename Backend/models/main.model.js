@@ -28,7 +28,10 @@ const accountSchema = new Schema({
 
 // Define Transaction Schema
 const transactionSchema = new Schema({
-    productID: [{ type: Schema.Types.ObjectId, ref: 'Product', required: true }],
+    productID: {
+        Product: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
+        Amount: { type: Number, required: true, default: "1"}
+    },
     accountID: { type: Schema.Types.ObjectId, ref: 'Account', required: true },
     paymentID: { type: Schema.Types.ObjectId, ref: 'PaymentCode', required: true },
     createdAt: { type: Date, default: Date.now }
