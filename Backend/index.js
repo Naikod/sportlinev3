@@ -22,7 +22,7 @@ app.use('/payment', paymentCodeRoutes);
 app.use('/email', emailRoutes)
 
 // Database connection
-mongoose.connect('PASTE-THE-DATABASE-URL', {
+mongoose.connect('COPY-THE-DATABASE-URL', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });

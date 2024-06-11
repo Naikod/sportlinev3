@@ -31,24 +31,37 @@ export default function DetailProduct(props) {
   };
 
   const handleCart = () => {
-    toast.info(<div> Added to Cart! <a href="/cart">Cek Keranjang</a> </div>, {
-      position: "top-right",
-      autoClose: 10000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-    setProduct(prevProduct => {
-      const updatedProduct = [...prevProduct, {product: { id: data._id, amount: quantity, total: totalPrice, image: data.images, name: data.name }, UserID: userDataID._id}];
-      localStorage.setItem("cart", JSON.stringify(updatedProduct));
-      return updatedProduct;
-    });
-    setTimeout(() => {
-      navigate("/cart");
-    }, 2000)
+    if(userDataID){
+      toast.info(<div> Added to Cart! <a href="/cart">Cek Keranjang</a> </div>, {
+        position: "top-right",
+        autoClose: 10000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setProduct(prevProduct => {
+        const updatedProduct = [...prevProduct, {product: { id: data._id, amount: quantity, total: totalPrice, image: data.images, name: data.name }, UserID: userDataID._id}];
+        localStorage.setItem("cart", JSON.stringify(updatedProduct));
+        return updatedProduct;
+      });
+      setTimeout(() => {
+        navigate("/cart");
+      }, 2000)
+    } else {
+      toast.error(<div> Please login first!</div>, {
+        position: "top-right",
+        autoClose: 10000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   const back = () => {

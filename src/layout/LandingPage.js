@@ -11,9 +11,9 @@ export default function Main() {
     <div>
       <Navbar />
       <Landing />
-      {/* <BenefitLanding /> */}
+      <BenefitLanding />
       {/* <BestOfferProduct /> */}
-      {/* <Footer /> */}
+      <Footer />
     </div>
   )
 }

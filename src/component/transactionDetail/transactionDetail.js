@@ -101,12 +101,16 @@ export default function TransactionDetail() {
                       </div>
                       <div>Payment ID: {data.paymentID.id}</div>
                       <div>Total: {rupiah(data.paymentID.total)}</div>
-                      <div>Status: {data.paymentID.paid}</div>
+                      <div>Status: {data.paymentID.paid} {data.paymentID.paid=="Pending"?<a href={`/payment/${data.paymentID.id}`}><span class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">Bayar Disini</span></a>:""}</div>
                       <div>
                         Expire At:{" "}
-                        {new Date(
+                        {new Date() > new Date(
                           data.paymentID.expireAt
-                        ).toLocaleString()}
+                        )? <>{new Date(
+                            data.paymentID.expireAt
+                          ).toDateString()} <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">Expire</span></>: new Date(
+                            data.paymentID.expireAt
+                          ).toLocaleString() }
                       </div>
                     </div>
                   </div>

@@ -68,14 +68,6 @@ export default function Navbar() {
           <div className="flex gap-2 justify-between self-stretch">
             {isLoggedIn ? (
               <>
-                <div className="flex flex-col justify-center items-start py-3 pr-52 pl-2 rounded-md bg-neutral-200">
-                  <img
-                    loading="lazy"
-                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/38fb3c254c486f8c3def1d05c04abbf060a2b6ac58aa5873c5c3bcc19c1d6fb1?"
-                    className="w-6 aspect-square"
-                    alt="Search"
-                  />
-                </div>
                 <div className="flex gap-2 justify-between self-start">
                   <div className="flex justify-center items-center self-start p-2 w-11 h-11 rounded-md bg-neutral-200">
                     <a href="/cart">

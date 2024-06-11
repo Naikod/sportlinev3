@@ -37,10 +37,14 @@ export default function () {
 
   useEffect(() => {
     const fetchInvoice = async () => {
-      const response = await axios.get(
-        `http://${process.env.REACT_APP_PAYMENT_IP}:5000/payment/status/${paymentid}`
-      );
-      setDataInvoice(response.data[0]);
+      try {
+        const response = await axios.get(
+          `http://${process.env.REACT_APP_PAYMENT_IP}:5000/payment/status/${paymentid}`
+        );
+        setDataInvoice(response.data[0]);
+      } catch (error) {
+        return <>Network Error</>
+      }
     };
 
     fetchInvoice();
@@ -119,7 +123,7 @@ export default function () {
                         </div>
                         <div className="overflow-hidden relative flex-col items-center px-16 pt-6 max-w-full text-3xl font-bold leading-9 aspect-square w-[415px] max-md:px-5 max-md:pt-10">
                           <QRCode
-                            value={`http://192.168.1.34:3000/payment/mobile/${dataInvoice.id}`}
+                            value={`http://${process.env.REACT_APP_PAYMENT_IP}:3000/payment/mobile/${dataInvoice.id}`}
                             className="mb-4"
                             size={256}
                           />
