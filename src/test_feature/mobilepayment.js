@@ -31,7 +31,7 @@ function PaymentPage({ match }) {
       if(amount >= data.total) {
         const response = await axios.post(
           `http://${process.env.REACT_APP_PAYMENT_IP}:5000/payment/confirm`,
-          { id: idPayment.paymentid, amount: amount }
+          { _id:data._id, id: idPayment.paymentid, amount: amount }
         );
         if (response.data.success) {
           if (response.data.data.total <= Number(amount)) {

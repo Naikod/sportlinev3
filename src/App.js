@@ -13,6 +13,9 @@ import ProfilePage from "./component/profilePage/profilePage";
 import OTPPage from "./component/auth/OTPPage";
 import TransactionDetail from "./component/transactionDetail/transactionDetail";
 import TransactionHistory from "./component/transactionDetail/transactionList";
+import AuthService from "./component/auth/AuthProvider";
+import StatisticsChart from "./component/admin-panel/dashboard";
+import ProductList from "./component/admin-panel/ProductList";
 
 function App() {
   return (
@@ -20,7 +23,7 @@ function App() {
       <div>
         <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="/detail/:id" element={<DetailProduct />} />
+          <Route path="/detail/:id" element={AuthService.isAuthenticated() ? <DetailProduct /> : <Page404NotFound />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/bill" element={<Bill />} />
           <Route path="/login" element={<LoginPage />} />
@@ -37,7 +40,9 @@ function App() {
             }
           
           />
-          <Route path="/transactions" element={<TransactionHistory />} />
+          <Route path="/admin/dashboard" element={AuthService.isAdmin() ? <ProductList /> : <Page404NotFound />} />
+          <Route path="/statistic" element={<StatisticsChart />} />
+          <Route path="/transactions" element={AuthService.isAuthenticated() ? <TransactionHistory /> : <Page404NotFound />} />
           <Route path="/transaction-detail/:id" element={<TransactionDetail />} />
           <Route path="/payment/:paymentid" element={<Payment />} />
           <Route

@@ -5,7 +5,7 @@ HOW TO RUN
 [Windows]: ipconfig {and search the ipv4 and copy the ip address}
 [Linux]: hostname -I {copy the ip address}
 3. Go to the directory of the project
-4. Type "REACT_APP_PAYMENT_IP=<your-ip-goes-here> npm start"
+4. Type "REACT_APP_PAYMENT_IP={your-ip-goes-here} npm start"
 5. Open [website](https://naikod.github.io)
 6. Go to tab decrypt and paste this 
 ```
@@ -14,3 +14,5 @@ bEfA21e0c243C711cF52cb55BF9097Ec05BFc3Fbb7C718061b2835554cEF7e850425e6c78C5c4f82
 7. and input the Decryption Key : mongodbsecretkey
 8. paste it on /Backend/index.js on line 25
 9. and type in command 'node index' or 'nodemon index'
+
+Need Fixed : When click confirm payment should be only 1x clicked (can be multipled, this make product stock will be decreased!) (Fixed!)

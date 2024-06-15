@@ -1,4 +1,4 @@
-const {Transaction} = require('../models/main.model');
+const {Transaction, PaymentCode} = require('../models/main.model');
 
 // Get all transactions
 exports.getAllTransactions = async (req, res) => {
@@ -10,6 +10,53 @@ exports.getAllTransactions = async (req, res) => {
     }
 };
 
+exports.statisticSelling = async (req, res) => {
+    try {
+        const productSales = await Transaction.aggregate([
+            {
+                $group: {
+                    _id: "$productID.Product",
+                    totalAmountSold: { $sum: "$productID.Amount" }
+                }
+            },
+            {
+                $lookup: {
+                    from: "products",
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "productDetails"
+                }
+            },
+            {
+                $unwind: "$productDetails"
+            },
+            {
+                $project: {
+                    _id: "$productDetails._id",
+                    name: "$productDetails.name",
+                    totalAmountSold: 1
+                }
+            }
+        ]);
+
+        // Aggregate total revenue
+        const totalRevenue = await PaymentCode.aggregate([
+            {
+                $group: {
+                    _id: null,
+                    totalRevenue: { $sum: "$total" }
+                }
+            }
+        ]);
+
+        res.status(200).json({
+            productSales,
+            totalRevenue: totalRevenue[0] ? totalRevenue[0].totalRevenue : 0
+        })
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+}
 // Get a transaction by ID
 exports.getTransactionById = async (req, res) => {
     try {

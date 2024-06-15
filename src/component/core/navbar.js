@@ -89,6 +89,18 @@ export default function Navbar() {
                       />
                     </a>
                   </div>
+                  {AuthService.isAdmin() ? 
+                  <div className="flex justify-center items-center p-2 rounded-md bg-yellow-200 h-[45px] w-[45px]">
+                    <a href="/admin/dashboard">
+                      <img
+                        loading="lazy"
+                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/75cd2febd8d17a1e89ad30de39e84fd8c34cf92d1ab6437e574c03ea5d4393c5?"
+                        className="aspect-square w-[29px]"
+                        alt="User"
+                      />
+                    </a>
+                  </div>
+                  : ""}
                   <button
                     onClick={handleLogout}
                     className="text-white bg-red-500 px-3 py-2 rounded-md"

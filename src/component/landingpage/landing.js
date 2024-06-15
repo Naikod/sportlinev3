@@ -16,7 +16,7 @@ export default function Landing() {
       const response = await axios.get("http://localhost:5000/products");
       setLimitedProduct(
         response.data
-          .filter((item) => item.category.includes("Limited"))
+          .filter((item) => item.category.includes("Limited") && item.stock > 0)
           .slice(0, 3)
       );
       setIsLoading(false);

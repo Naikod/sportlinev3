@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../auth/AuthProvider";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Cart() {
   const [dataCart, setDataCart] = useState(
@@ -30,14 +32,27 @@ export default function Cart() {
   };
 
   const pay = async () => {
-    const response = await axios.post(`http://${process.env.REACT_APP_PAYMENT_IP}:5000/payment`, { total: totalPrice + 25000 });
-    const createTransaction = await axios.post(`http://${process.env.REACT_APP_PAYMENT_IP}:5000/transactions`, {
-      productID: { Product: selectedProduct.data.id, Amount: selectedProduct.data.amount },
-      accountID: AuthService.getCurrentUser()._id,
-      paymentID: response.data._id
-    });
-    // console.log(response.data)
-    navigate(`/payment/${response.data.id}`);
+    if(selectedProduct){
+      const response = await axios.post(`http://${process.env.REACT_APP_PAYMENT_IP}:5000/payment`, { total: totalPrice + 25000 });
+      const createTransaction = await axios.post(`http://${process.env.REACT_APP_PAYMENT_IP}:5000/transactions`, {
+        productID: { Product: selectedProduct.data.id, Amount: selectedProduct.data.amount },
+        accountID: AuthService.getCurrentUser()._id,
+        paymentID: response.data._id
+      });
+      // console.log(response.data)
+      navigate(`/payment/${response.data.id}`);
+    } else {
+      toast.info("Select the item", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   const removeItem = (id) => {
@@ -52,6 +67,7 @@ export default function Cart() {
 
   return (
     <div>
+      <ToastContainer />
       <div className="flex flex-col justify-center items-center p-20 bg-white max-md:px-5">
         <div
           onClick={handleBack}

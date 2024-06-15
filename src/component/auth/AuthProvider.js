@@ -1,5 +1,7 @@
-const Chiperline = require("chiperline");
+import Chiperline from "chiperline";
+import Cookies from "universal-cookie";
 const chiper = new Chiperline("SUPERSECRETSPORTLINEV3");
+const kuki = new Cookies();
 
 class AuthService {
   static async login(email, password) {
@@ -14,10 +16,12 @@ class AuthService {
     );
     const data = await response.json();
     if (data.status == "Success") {
-      localStorage.setItem(
-        "SESSION_DATA",
-        chiper.encrypt(JSON.stringify(data.user))
-      );
+      const expireDate = new Date();
+      expireDate.setDate(expireDate.getDate() + 1);
+      kuki.set("SESSION_DATA", chiper.encrypt(JSON.stringify(data.user)), {
+        path: "/",
+        expires: expireDate,
+      });
       return data;
     } else {
       return data;
@@ -25,19 +29,40 @@ class AuthService {
   }
 
   static setLogin(data) {
-    localStorage.setItem("SESSION_DATA", chiper.encrypt(JSON.stringify(data)));
+    const expireDate = new Date();
+    expireDate.setDate(expireDate.getDate() + 1);
+    kuki.set("SESSION_DATA", chiper.encrypt(JSON.stringify(data)), {
+      path: "/",
+      expires: expireDate,
+    });
   }
 
   static logout() {
-    // Clear user data from localStorage upon logout
-    localStorage.removeItem("SESSION_DATA");
+    kuki.remove("SESSION_DATA");
   }
+
+  static isAdmin() {
+    if (kuki.get("SESSION_DATA")) {
+      try {
+        const user = chiper.decrypt(kuki.get("SESSION_DATA"));
+        return JSON.parse(user).role == "Admin" ? true : false
+      } catch (error) {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  };
 
   static getCurrentUser() {
     // Retrieve user data from localStorage
-    if (localStorage.getItem("SESSION_DATA")) {
-      const user = chiper.decrypt(localStorage.getItem("SESSION_DATA"));
-      return user ? JSON.parse(user) : null;
+    if (kuki.get("SESSION_DATA")) {
+      try {
+        const user = chiper.decrypt(kuki.get("SESSION_DATA"));
+        return user ? JSON.parse(user) : null;
+      } catch (error) {
+        return null;
+      }
     } else {
       return null;
     }
@@ -45,7 +70,14 @@ class AuthService {
 
   static isAuthenticated() {
     // Check if user is authenticated
-    return localStorage.getItem("SESSION_DATA") !== null ? true : false;
+    if (kuki.get("SESSION_DATA")) {
+      try {
+        const user = JSON.parse(chiper.decrypt(kuki.get("SESSION_DATA")));
+        return user._id !== null ? true : false;
+      } catch (error) {
+        return false;
+      }
+    }
   }
 }
 

@@ -74,6 +74,7 @@ export default function TransactionHistory() {
             className="flex justify-between p-6 mb-4 bg-white rounded-xl shadow-sm border cursor-pointer hover:bg-gray-100"
           >
             <div className="flex flex-col">
+            {new Date(transaction.createdAt).toLocaleString()}
               <div className="text-xl font-bold">
                 {transaction.productID.Product.name}
               </div>
@@ -86,7 +87,7 @@ export default function TransactionHistory() {
                 {rupiah(transaction.paymentID.total)}
               </div>
               <div className="text-gray-600">
-                Status: {transaction.paymentID.paid}
+                Status Pembayaran: {transaction.paymentID.paid}
               </div>
             </div>
           </div>

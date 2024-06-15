@@ -1,16 +1,28 @@
-const { PaymentCode } = require("../models/main.model");
+const { PaymentCode, Product, Transaction } = require("../models/main.model");
+const mongoose = require('mongoose');
 const Chiperline = require("chiperline");
 const chiper = new Chiperline("secretkeysportlinev3");
 
+
 exports.confirmPayment = async (req, res) => {
   try {
-    const confirmPayment = await PaymentCode.findOneAndUpdate(
-      { id: req.body.id },
-      { paid: "Done", isExpire: true },
-      { new: true } // Return the updated document
-    );
-    res.status(200).json({ success: true, data: confirmPayment });
+    const checkPayment = await PaymentCode.findOne({id: req.body.id});
+    if(checkPayment.paid=="Pending" && checkPayment.isExpire!=true){
+      const confirmPayment = await PaymentCode.findOneAndUpdate(
+        { id: req.body.id },
+        { paid: "Done", isExpire: true },
+        { new: true } // Return the updated document
+      );
+      const ids = new mongoose.Types.ObjectId(req.body._id)
+      const dataTransaction = await Transaction.findOne({paymentID: ids}).populate("productID.Product")
+      const newStock = dataTransaction.productID.Product.stock - dataTransaction.productID.Amount
+      const newData = await Product.findByIdAndUpdate({_id: new mongoose.Types.ObjectId(dataTransaction.productID.Product._id)}, {stock: newStock}, {new: true})
+      res.status(200).json({ success: true, data: confirmPayment });
+    } else {
+      res.status(500).json({ success: false, message: "Payment already Paid / Expire" });
+    }
   } catch (error) {
+    console.error(error)
     res.status(500).json({ message: error.message });
   }
 };
